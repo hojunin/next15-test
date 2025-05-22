@@ -6,6 +6,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+// 빌드 시 사전 렌더링을 비활성화하고 런타임에 렌더링하도록 설정
+export const dynamic = "force-dynamic";
+
 async function getDataThatThrowsError() {
   // 의도적으로 에러 발생
   await new Promise((resolve) => setTimeout(resolve, 100)); // 약간의 딜레이 후 에러

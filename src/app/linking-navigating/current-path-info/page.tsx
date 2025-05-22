@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -8,13 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SearchParamsDisplay } from "./search-params-display";
+
+// export const dynamic = 'force-dynamic'; // Suspense 사용 시 이 옵션은 필요 없을 수 있음
 
 export default function CurrentPathInfoPage() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // const name = searchParams.get("name"); // NOTE: 직접 사용하지 않고, 아래에서 전체 파라미터 표시
-  // const age = searchParams.get("age");
 
   return (
     <Card className="w-full max-w-xl mx-auto">
@@ -35,22 +35,9 @@ export default function CurrentPathInfoPage() {
             {pathname}
           </p>
         </div>
-        <div>
-          <h4 className="font-semibold">검색 파라미터 (Search Params):</h4>
-          {searchParams.toString() ? (
-            <ul className="list-disc list-inside pl-4 space-y-1 bg-gray-100 p-3 rounded-md">
-              {Array.from(searchParams.entries()).map(([key, value]) => (
-                <li key={key} className="font-mono text-sm">
-                  <span className="font-semibold">{key}</span>: {value}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-muted-foreground italic">
-              검색 파라미터가 없습니다.
-            </p>
-          )}
-        </div>
+        <React.Suspense fallback={<div>검색 파라미터 로딩 중...</div>}>
+          <SearchParamsDisplay />
+        </React.Suspense>
       </CardContent>
     </Card>
   );

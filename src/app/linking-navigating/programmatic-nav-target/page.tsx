@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -7,11 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SearchParamsContent } from "./search-params-content";
 
 export default function ProgrammaticNavTargetPage() {
-  const searchParams = useSearchParams();
-  const replaced = searchParams.get("replaced");
-
   return (
     <Card className="w-full max-w-xl mx-auto">
       <CardHeader>
@@ -25,18 +23,9 @@ export default function ProgrammaticNavTargetPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {replaced && (
-          <p className="p-3 bg-sky-100 border border-sky-300 rounded-md">
-            이 페이지는 &apos;router.replace&apos;를 통해 네비게이션 되었으며,
-            쿼리 파라미터 (replaced=true)가 전달되었습니다.
-          </p>
-        )}
-        {!replaced && (
-          <p className="p-3 bg-gray-100 border border-gray-300 rounded-md">
-            이 페이지는 &apos;router.push&apos; 또는 직접 URL 접근을 통해
-            네비게이션 되었습니다.
-          </p>
-        )}
+        <React.Suspense fallback={<div>검색 파라미터 로딩 중...</div>}>
+          <SearchParamsContent />
+        </React.Suspense>
       </CardContent>
     </Card>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -7,12 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SearchParamsContent } from "./search-params-content";
 
 export default function LinkTargetPage() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query");
-  const replaced = searchParams.get("replaced");
-
   return (
     <Card className="w-full max-w-xl mx-auto">
       <CardHeader>
@@ -24,16 +21,9 @@ export default function LinkTargetPage() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {query && (
-          <p className="p-3 bg-blue-100 border border-blue-300 rounded-md">
-            전달된 쿼리 파라미터 (query): <strong>{query}</strong>
-          </p>
-        )}
-        {replaced && (
-          <p className="p-3 bg-green-100 border border-green-300 rounded-md">
-            이 페이지는 &apos;replace&apos; 옵션으로 네비게이션 되었습니다.
-          </p>
-        )}
+        <React.Suspense fallback={<div>검색 파라미터 로딩 중...</div>}>
+          <SearchParamsContent />
+        </React.Suspense>
         <div>
           <h4 className="font-semibold">해시 Fragment 테스트</h4>
           <p className="text-sm text-muted-foreground mb-2">
